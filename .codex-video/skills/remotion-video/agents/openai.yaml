@@ -1,0 +1,4 @@
+interface:
+  display_name: "Remotion Video"
+  short_description: "Programmatic videos with React + Remotion + TTS."
+  default_prompt: "Use $remotion-video to make a video. Ask for: topic, style, length."

@@ -1,0 +1,10 @@
+{
+  "name": "seedance-prompt-en",
+  "full_name": "dexhunter/seedance2-skill/seedance-prompt-en",
+  "type": "skill",
+  "author": "dexhunter",
+  "kit": "seedance2-skill",
+  "content_hash": "107dd9fa5ef46f64d3d5183957244fd42f32a91df57e615ba63338c1344cf442",
+  "description": "Write effective prompts for Jimeng Seedance 2.0 multimodal AI video generation. Use when users want to create video prompts using text, images, videos, and audio inputs with the @ reference system. Covers camera movements, effects replication, video extension, editing, music beat-matching, e-commerce ads, short dramas, and educational content.",
+  "score": 81
+}

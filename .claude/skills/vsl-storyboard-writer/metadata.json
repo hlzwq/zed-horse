@@ -1,0 +1,10 @@
+{
+  "name": "vsl-storyboard-writer",
+  "full_name": "ncklrs/startup-os-skills/vsl-storyboard-writer",
+  "type": "skill",
+  "author": "ncklrs",
+  "kit": "startup-os-skills",
+  "content_hash": "bded736578540ddc44fe0b5c9cf165f19e0ed9e99b3431a33bbd221bdfe125d1",
+  "description": "Expert VSL (Video Sales Letter) and product marketing video storyboard writer. Use when creating sales videos, product demos, explainer videos, social media video content, or marketing video scripts. Use when asked to \"write a video script\", \"create a VSL\", \"storyboard a sales video\", or \"script a product demo\". Produces storyboard scripts optimized for handoff to motion designer and Remotion video production.",
+  "score": 80
+}

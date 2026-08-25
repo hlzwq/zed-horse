@@ -1,0 +1,353 @@
+AI自动生成视频平台开放 API 接口文档
+
+一、接口说明
+1. 本文档只包含 open-api 文档中的开放接口。
+2. 基础地址：https://shiping.djpsd.com/
+3. 推荐中转接口前缀：/v1
+4. 旧版兼容接口前缀：/api/v1
+5. API Key 鉴权支持以下任意一种请求头：
+   - Authorization: Bearer 你的APIKey
+   - api-key: 你的APIKey
+   - x-api-key: 你的APIKey
+   - x-goog-api-key: 你的APIKey
+6. 回调地址不由创建任务接口传入，固定读取后台 API Key 管理页里配置的 callback_url。
+
+二、推荐接口列表
+1. GET /v1/models
+   - 作用：查询可用模型列表。
+2. POST /v1/media/upload
+   - 作用：上传参考图，返回静态访问地址。
+3. POST /v1/media/generate
+   - 作用：创建视频或图片生成任务。
+4. POST /v1/media/retry
+   - 作用：重试失败的生成任务。
+5. GET /v1/media/status?task_id={task_id}
+   - 作用：查询任务状态和结果。
+
+三、查询模型列表
+1. 接口地址
+   GET /v1/models
+
+2. 请求参数
+   - 无
+
+3. 响应字段
+   - object
+     - 类型：字符串
+     - 说明：列表对象类型，固定返回 list。
+   - data
+     - 类型：数组
+     - 说明：模型列表。
+   - data[].id
+     - 类型：字符串
+     - 说明：模型 ID，创建任务时传入 model 字段。
+   - data[].display_name
+     - 类型：字符串
+     - 说明：模型中文展示名。
+   - data[].type
+     - 类型：字符串
+     - 说明：模型类型，video 表示视频模型，image 表示图片模型。
+
+4. 当前模型
+   - video-v1：视频生成。
+   - image-v1：1K 图片生成。
+   - image-v1-2k：2K 图片生成。
+   - image-v1-4k：4K 图片生成。
+
+四、上传参考图
+1. 接口地址
+   POST /v1/media/upload
+
+2. 请求方式
+   multipart/form-data
+
+3. 请求头
+   - Authorization / api-key / x-api-key / x-goog-api-key
+     - 类型：字符串
+     - 必填：是
+     - 说明：API Key，四种方式任选一种。
+
+4. 请求参数
+   - file
+     - 类型：文件
+     - 必填：是
+     - 说明：要上传的参考图片。
+
+5. 成功响应字段
+   - url
+     - 类型：字符串
+     - 说明：上传后的静态访问地址，可直接放入创建任务的 params.images。
+
+6. 响应示例
+```json
+{
+  "url": "/uploads/xxxx.jpg"
+}
+```
+
+五、创建媒体任务
+1. 接口地址
+   POST /v1/media/generate
+
+2. 请求方式
+   application/json
+
+3. 请求头
+   - Authorization / api-key / x-api-key / x-goog-api-key
+     - 类型：字符串
+     - 必填：是
+     - 说明：API Key，四种方式任选一种。
+
+4. 请求字段
+   - model
+     - 类型：字符串
+     - 必填：是
+     - 说明：模型 ID，支持 video-v1、image-v1、image-v1-2k、image-v1-4k。
+   - prompt
+     - 类型：字符串
+     - 必填：是
+     - 说明：视频或图片生成提示词。
+   - params
+     - 类型：对象
+     - 必填：是
+     - 说明：生成参数对象。
+   - params.duration
+     - 类型：整数
+     - 必填：否
+     - 默认值：10
+     - 说明：视频时长，单位秒，视频模型推荐传 5、10、15；图片模型可不传。
+   - params.aspect_ratio
+     - 类型：字符串
+     - 必填：否
+     - 默认值：16:9
+     - 说明：生成比例，例如 16:9。
+   - params.images
+     - 类型：数组
+     - 必填：否
+     - 说明：参考图地址列表，传 /v1/media/upload 返回的 url。文生图可传空数组。
+
+5. 请求示例
+```json
+{
+  "model": "video-v1",
+  "prompt": "生成一段16:9横屏的视频",
+  "params": {
+    "duration": 10,
+    "aspect_ratio": "16:9",
+    "images": ["/uploads/1.jpg", "/uploads/2.png"]
+  }
+}
+```
+
+生图示例：
+```json
+{
+  "model": "image-v1-2k",
+  "prompt": "生成一张16:9横屏的商品宣传图",
+  "params": {
+    "aspect_ratio": "16:9",
+    "images": ["/uploads/1.jpg"]
+  }
+}
+```
+
+6. 成功响应字段
+   - request_id
+     - 类型：字符串
+     - 说明：本次创建请求 ID。
+   - task_id
+     - 类型：整数
+     - 说明：任务 ID，用于后续查询状态。
+   - task_status
+     - 类型：字符串
+     - 说明：任务初始状态，创建成功固定返回 PENDING。
+
+7. 成功响应示例
+```json
+{
+  "request_id": "req_123",
+  "task_id": 123,
+  "task_status": "PENDING"
+}
+```
+
+六、重试失败任务
+1. 接口地址
+   POST /v1/media/retry
+
+2. 请求方式
+   application/json
+
+3. 请求头
+   - Authorization / api-key / x-api-key / x-goog-api-key
+     - 类型：字符串
+     - 必填：是
+     - 说明：API Key，四种方式任选一种。
+
+4. 请求字段
+   - task_id
+     - 类型：整数
+     - 必填：是
+     - 说明：要重试的视频或图片任务 ID，只能重试当前 API Key 创建的失败任务。
+
+5. 请求示例
+```json
+{
+  "task_id": 123
+}
+```
+
+6. 成功响应字段
+   - request_id
+     - 类型：字符串
+     - 说明：本次重试请求 ID。
+   - task_id
+     - 类型：整数
+     - 说明：原任务 ID，重试不会创建新 ID。
+   - task_status
+     - 类型：字符串
+     - 说明：重试成功后固定返回 PENDING。
+
+7. 成功响应示例
+```json
+{
+  "request_id": "req_123",
+  "task_id": 123,
+  "task_status": "PENDING"
+}
+```
+
+8. 错误说明
+   - 只能重试 state=failed 的任务，非失败任务会返回错误。
+   - 只能重试当前 API Key 创建的任务，其他任务统一按任务不存在处理。
+   - 重试成功后继续使用 GET /v1/media/status?task_id={task_id} 查询原任务 ID。
+
+七、查询任务状态
+1. 接口地址
+   GET /v1/media/status?task_id={task_id}
+
+2. 请求头
+   - Authorization / api-key / x-api-key / x-goog-api-key
+     - 类型：字符串
+     - 必填：是
+     - 说明：API Key，四种方式任选一种。
+
+3. 查询参数
+   - task_id
+     - 类型：整数
+     - 必填：是
+     - 说明：创建任务接口返回的任务 ID。
+
+4. 响应字段
+   - task_id
+     - 类型：整数
+     - 说明：任务 ID。
+   - state
+     - 类型：字符串
+     - 说明：程序判断用状态，固定为 pending、running、success、failed 之一。
+   - status
+     - 类型：字符串
+     - 说明：中文展示状态，例如 排队中、处理中、已完成、失败。
+   - is_final
+     - 类型：布尔值
+     - 说明：是否终态。true 表示任务已结束，false 表示还需要继续轮询。
+   - progress
+     - 类型：字符串
+     - 说明：任务进度展示值，例如 0%、50%、100%。
+   - result_url
+     - 类型：字符串
+     - 说明：生成成功后的结果地址，图片任务为图片地址，视频任务为视频地址，未完成或失败时为空字符串。
+	 - 后期会改为带http的全链接，要判断后再下载
+   - video_url
+     - 类型：字符串
+     - 说明：视频任务生成成功后的去水印视频地址，图片任务为空字符串。
+   
+   
+   - result_type
+     - 类型：字符串
+     - 说明：结果类型，成功且有结果时为 video 或 image，否则为空字符串。
+   - error
+     - 类型：字符串
+     - 说明：失败原因，成功或未失败时为空字符串。
+   - cost
+     - 类型：整数
+     - 说明：任务积分消耗。完成前通常为预扣积分，完成后为实扣积分。
+
+5. 响应示例
+```json
+{
+  "task_id": 123,
+  "state": "success",
+  "status": "已完成",
+  "is_final": true,
+  "progress": "100%",
+  "result_url": "/uploads/video/2026-06-26/xxxx.mp4",  //后期会改为带http的全链接，要判断后再下载
+  "video_url": "https://example.com/video.mp4",
+  "result_type": "video",
+  "error": "",
+  "cost": 10
+}
+```
+
+图片任务成功示例：
+```json
+{
+  "task_id": 124,
+  "state": "success",
+  "status": "已完成",
+  "is_final": true,
+  "progress": "100%",
+  "result_url": "/uploads/images/2026-06-26/xxxx.jpg",
+  "video_url": "",
+  "result_type": "image",
+  "error": "",
+  "cost": 2
+}
+```
+
+八、状态判断规则
+1. 中转程序只建议使用 state 和 is_final 做业务判断。
+2. state=pending 表示任务排队中。
+3. state=running 表示任务处理中。
+4. state=success 表示任务成功完成，可以读取 result_url，并通过 result_type 判断结果类型。
+5. state=failed 表示任务失败或取消，可以读取 error。
+6. is_final=false 时继续轮询。
+7. is_final=true 时停止轮询。
+8. status 是中文展示字段，不建议用于程序判断。
+9. 响应里不返回 status_group 字段，减少中转解析代码。
+
+九、旧版兼容接口
+1. POST /api/v1/video-jobs
+   - 作用：旧版创建视频任务。
+   - 鉴权：请求体传 api_key。
+2. GET /api/v1/video-jobs
+   - 作用：旧版查询任务列表。
+   - 鉴权：请求头传 api-key。
+3. GET /api/v1/video-jobs/{task_id}
+   - 作用：旧版查询单个任务。
+   - 鉴权：请求头传 api-key。
+4. POST /task/upload
+   - 作用：旧版上传图片。
+   - 鉴权：兼容 Authorization、api-key 和匿名上传。
+
+十、错误响应说明
+1. API Key 无效或禁用
+```json
+{
+  "detail": "API Key无效或已禁用"
+}
+```
+
+2. 模型不支持
+```json
+{
+  "detail": "不支持的模型"
+}
+```
+
+3. 任务不存在
+```json
+{
+  "detail": "任务不存在"
+}
+```
