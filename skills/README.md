@@ -6,8 +6,10 @@
 > 防膨胀：人类入口 ≤2 常用、≤4 上限；子技能挂主技能编排；淘汰进 `_archive/`。
 > 增删判据三问：功能是否重复？调用条件是否明确？能否说清它解决了哪个现有能力解决不了的缺口？
 
-| 技能 | 四步走 | 角色（守哪条铁律） | 状态 |
-|------|--------|------------------|------|
+| 技能 | 类型 | 说明与 GitHub Raw 直链 | 状态 |
+|------|------|------------------------|------|
+| `continous-long-poster-fugu` | 平面图像 | 特雷勒复古纸板剪影长海报生成 ([Raw SKILL.md](https://raw.githubusercontent.com/hlzwq/zed-horse/master/.agents/skills/continous-long-poster-fugu/SKILL.md)) | ✅ 已就绪 |
+| `continuous-long-poster` | 平面图像 | 连续长海报标准生成与无缝拼接 ([Raw SKILL.md](https://raw.githubusercontent.com/hlzwq/zed-horse/master/.agents/skills/continuous-long-poster/SKILL.md)) | ✅ 已就绪 |
 | `zed-init` | 初始化 | 定方向 | 待建 |
 | `zed-research` | 分析 | 找依据、排真相源 | 待建 |
 | `zed-mini` | 原型 | 第一件作品与定标 | 待建 |

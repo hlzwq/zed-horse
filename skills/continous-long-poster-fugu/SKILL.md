@@ -5,6 +5,9 @@ description: "Generate retro folk-art continuous long posters (特雷勒式复�
 
 # 特雷勒式复古纸板剪影长海报技能 (continous-long-poster-fugu)
 
+> **GitHub 托管直链 (Raw)**: `https://raw.githubusercontent.com/hlzwq/zed-horse/master/.agents/skills/continous-long-poster-fugu/SKILL.md`  
+> **开源仓库**: [hlzwq/zed-horse](https://github.com/hlzwq/zed-horse)
+
 本技能将**长篇读书体会、文章摘要、方法论要点、生活观察**转化为**特雷勒式（Bill Traylor）复古纸板剪影风格的纵向连续长海报**。具备长文本排版精炼、抽象论点视觉化转化、Gemini 分段连续生图与自动化无缝羽化拼接全流程能力。
 
 ---

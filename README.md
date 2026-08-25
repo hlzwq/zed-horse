@@ -37,6 +37,16 @@ bash scripts/check-tools.sh --mirrors  # 装不上时的国内镜像
 | 5　状态与文档 | `state/` · `docs/` | 我的账 |
 | 6　过程材料 | `_build/` `_tmp/` `_archive/` | 扔的，不入库 |
 
+## 🌟 自产特色技能 (Skills)
+
+- **`continous-long-poster-fugu`**（特雷勒复古纸板剪影长海报）
+  - **Raw 直链**：`https://raw.githubusercontent.com/hlzwq/zed-horse/master/.agents/skills/continous-long-poster-fugu/SKILL.md`
+  - **特点**：粗糙瓦楞纸板底色、铅笔排线素描、剪影人物动作、低饱和五色平涂、读书笔记卡片提炼。
+- **`continuous-long-poster`**（连续长海报标准生成与无缝拼接）
+  - **Raw 直链**：`https://raw.githubusercontent.com/hlzwq/zed-horse/master/.agents/skills/continuous-long-poster/SKILL.md`
+  - **特点**：多段连续切片生图、视觉基准锁、Python 自动化线性渐变羽化无缝拼合。
+
+
 第二组只有一条线要记：**能引用到什么程度**——`vault/` 可引用，`notes/` 与 `resources/` 只读。动了前者是冒犯，抄了后者是侵权。
 
 ## 这四份说明这个系统是什么
