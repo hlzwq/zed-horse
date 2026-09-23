@@ -3,7 +3,7 @@ name: meai-creator
 description: |
   使用 ME AI API 生成图片和视频。
   触发词：生图、生成图片、AI画图、文生图、图生图、生视频、生成视频、文生视频、图生视频、ME AI、meai
-  支持模型：seedream-5.0/4.5（图片）、seedance-2.0/happyhorse-1.0/wan2.7（视频）
+  支持模型：sd-2-fast / sd-2-c1 / sd-2.5-c1 等（视频，meaicc，默认 sd-2-fast）
 ---
 
 # ME AI 图片视频创作 Skill
@@ -12,6 +12,7 @@ description: |
 
 - Python 3.8+
 - 环境变量 `MEAI_API_KEY`：你的 API Key（sk-xxxx 格式）
+- 环境变量 `MEAI_BASE_URL`：可选，默认 `https://api.meaicc.com`（2026-09-24 用户定为准则；旧 `api.meai.cloud` 仍可用此变量覆盖）
 
 ## 脚本位置
 
@@ -111,10 +112,10 @@ python ~/.claude/skills/meai-creator/scripts/meai_api.py video \
 | `--first-frame` | 无 | 首帧图片 URL |
 | `--last-frame` | 无 | 尾帧图片 URL（仅 wan2.7） |
 | `--ref-images` | 无 | 参考图片 URL，逗号分隔 |
-| `--model` | seedance-2.0 | 可选 happyhorse-1.0、wan2.7 |
+| `--model` | sd-2-fast | 视频模型，见 meaicc 模型广场（sd-2-fast / sd-2-c1~c8 / sd-2.5-c1 等） |
 | `--resolution` | 1080P | 分辨率 |
 | `--ratio` | 16:9 | 宽高比 |
-| `--duration` | 15 | 时长（秒） |
+| `--duration` | 15 | 时长（秒），**范围 5–15** |
 | `--prompt-extend` | false | 是否扩展提示词 |
 | `--output` | ./meai_output.mp4 | 输出路径 |
 
@@ -130,10 +131,12 @@ python ~/.claude/skills/meai-creator/scripts/meai_api.py video \
 
 ## 注意事项
 
-1. **图片上传**：图生图、首帧等需要 HTTP/HTTPS 地址，本地文件需先上传到图床
-2. **任务轮询**：异步任务会自动轮询（每 20 秒），生成完成自动下载
-3. **内容审核**：避免违规、敏感内容，生成失败可能仍扣费
-4. **缓存时效**：网页生成的内容仅缓存 24 小时，及时下载
+1. **时长边界**：`duration` 只能 **5–15 秒**；参考生视频另有「输入视频 + 输出视频合计 ≤ 25 秒」限制
+2. **首尾帧**：sd-2 家族支持（与旧站 wan2.7-only 不同），`--first-frame` + `--last-frame` 同传
+3. **图片上传**：图生图、首帧等需要 HTTP/HTTPS 地址，本地文件需先上传到图床；图片分辨率需 ≥300×300
+4. **任务轮询**：异步任务会自动轮询（每 20 秒），生成完成自动下载
+5. **内容审核**：避免违规、敏感内容，生成失败可能仍扣费
+6. **缓存时效**：网页生成的内容仅缓存 10 小时，及时下载
 
 ## 当用户请求时
 

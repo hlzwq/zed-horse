@@ -5,7 +5,7 @@ ME AI 图片视频 API 调用工具
 
 环境变量：
   MEAI_API_KEY — API Key (sk-xxxx 格式)
-  MEAI_BASE_URL — 可选，默认 https://api.meai.cloud
+  MEAI_BASE_URL — 可选，默认 https://api.meaicc.com（2026-09-24 起以此为准则；旧 api.meai.cloud 仍可用本变量覆盖）
 """
 
 import argparse
@@ -23,7 +23,7 @@ if sys.platform == "win32":
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 # ── 配置 ──────────────────────────────────────────────
-BASE_URL = os.environ.get("MEAI_BASE_URL", "https://api.meai.cloud")
+BASE_URL = os.environ.get("MEAI_BASE_URL", "https://api.meaicc.com")
 API_KEY = os.environ.get("MEAI_API_KEY", "")
 POLL_INTERVAL = 20  # 秒
 MAX_POLL_TIME = 600  # 最长等待 10 分钟
@@ -202,7 +202,7 @@ def main():
     vid.add_argument("--first-frame", help="首帧图片 URL")
     vid.add_argument("--last-frame", help="尾帧图片 URL (仅 wan2.7)")
     vid.add_argument("--ref-images", help="参考图片 URL，逗号分隔")
-    vid.add_argument("--model", default="seedance-2.0", help="模型 (seedance-2.0 / happyhorse-1.0 / wan2.7)")
+    vid.add_argument("--model", default="sd-2-fast", help="视频模型 (sd-2-fast / sd-2-c1 / sd-2.5-c1 等，见模型广场)")
     vid.add_argument("--resolution", default="1080P", help="分辨率")
     vid.add_argument("--ratio", default="16:9", help="宽高比")
     vid.add_argument("--duration", type=int, default=15, help="时长(秒)")
